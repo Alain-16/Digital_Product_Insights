@@ -1,0 +1,5 @@
+
+
+#ignore environment variables
+.env
+*.env.local
