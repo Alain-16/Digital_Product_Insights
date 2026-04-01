@@ -1,0 +1,79 @@
+
+======================================================================
+ SPEND INTENSITY PREDICTION — MODEL PERFORMANCE REPORT
+ Generated: 2026-03-31 15:35
+======================================================================
+
+1. PROBLEM DEFINITION
+   Target:       Monthly digital spend per Consumer Unit ($)
+   Aggregation:  CU × Month level
+   Time span:    [np.int64(2020), np.int64(2021), np.int64(2022), np.int64(2023)]
+   Total CUs:    25,411
+   Total rows:   73,803 (after aggregation)
+
+2. DATA SPLIT (Time-based)
+   Training:     < Jan 2023  (51,202 rows)
+   Testing:      ≥ Jan 2023  (22,601 rows)
+
+3. TARGET STATISTICS
+   Mean:   $327.17
+   Median: $248.00
+   Std:    $409.43
+   Min:    $1.00
+   Max:    $19384.00
+
+4. MODEL COMPARISON
+   ┌──────────────────────┬───────────┬───────────────────┐
+   │ Metric               │ Ridge     │ Gradient Boosting │
+   ├──────────────────────┼───────────┼───────────────────┤
+   │ MAE ($)              │      0.00 │             13.78 │
+   │ RMSE ($)             │      0.00 │            123.89 │
+   │ R²                   │    1.0000 │            0.9224 │
+   │ MAPE (%)             │      0.00 │              4.70 │
+   └──────────────────────┴───────────┴───────────────────┘
+
+5. CROSS-VALIDATION (5-fold Time Series)
+   Fold scores: 0.9182, 0.9635, 0.9743, 0.9819, 0.9496
+   Mean R²:     0.9575 ± 0.0224
+
+6. TOP 10 FEATURES (Permutation Importance)
+    1. spend_electronics                   0.4506 ± 0.0039
+    2. spend_online_service                0.3845 ± 0.0057
+    3. ratio_online_service                0.1535 ± 0.0019
+    4. ratio_electronics                   0.0891 ± 0.0012
+    5. n_distinct_uccs                     0.0126 ± 0.0019
+    6. spend_software                      0.0051 ± 0.0001
+    7. log_income                          0.0038 ± 0.0013
+    8. log_salary                          0.0031 ± 0.0011
+    9. spend_lag_1m                        0.0005 ± 0.0006
+   10. fam_size                            0.0004 ± 0.0006
+
+7. MODEL CONFIGURATION
+   Algorithm:        GradientBoostingRegressor (scikit-learn)
+   n_estimators:     500 (stopped at 500)
+   max_depth:        6
+   learning_rate:    0.05
+   subsample:        0.8
+   min_samples_leaf: 20
+
+8. FEATURE SET (26 features)
+   Demographics:     fam_size, number_of_earners, log_income, log_salary,
+                     income_per_member, salary_to_income_ratio
+   Geography:        region, division, state, psu, population_size (encoded)
+   Time:             reference_year, month_num, month_sin, month_cos
+   Spend patterns:   n_distinct_uccs, category spend amounts & ratios
+   Lag features:     1-month lag, 2-month lag, 3-month rolling average
+
+9. OUTPUT FILES
+   01_model_performance.png   — Metrics, actual vs predicted, residuals
+   02_feature_importance.png  — Impurity & permutation importance
+   03_partial_dependence.png  — PDP for top numeric features
+   04_segment_analysis.png    — Predictions by region/income/family/month
+   05_model_diagnostics.png   — Learning curve & CV fold scores
+
+======================================================================
+ UPGRADE PATH (when packages are available):
+   • Replace GBR with XGBoost/LightGBM for ~5-15% improvement
+   • Add SHAP for individual prediction explanations
+   • See commented code blocks in the script
+======================================================================

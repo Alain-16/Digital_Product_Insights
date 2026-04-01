@@ -3,3 +3,7 @@
 #ignore environment variables
 .env
 *.env.local
+.venv/
+__pycache__/
+*.xlsx
+*.so
