@@ -1,178 +1,270 @@
 <!--
 README (Hybrid Findings Report + GitHub)
-Digital Product Insights (US) — Version 1.0 | Date: February 24, 2026
+Digital Product Insights (US) ? Version 1.0 | Date: February 24, 2026
 -->
 
-# 🚀 Digital Product Insights: End-to-End US Consumer Analytics
+# ? US Digital Products Market Intelligence
 
-**Quantifying the Digital Revolution through Real-World Economic Indicators**
+### Turning 262K+ Household Records into Actionable Market Strategy
 
-## 📋 Executive Summary
-
-This project delivers a portfolio-grade, end-to-end analytics pipeline and decision-ready insights for **digital product demand across the United States**. Using **BLS Consumer Expenditure Survey (CE) Public-Use Microdata (PUMD)**, the analysis moves beyond “toy datasets” and quantifies **digital spend (services + devices)**, ranks markets (Region × population-size proxy), tracks trends (nominal + inflation-adjusted), segments customers, and produces forecasts with risk signals.
-
-**Outputs**
-
-- Reproducible **ETL**
-- SQL **analytics + KPI tables**
-- Python **EDA + modeling notebooks**
-- Executive **Power BI dashboard** and slide-deck style narrative :contentReference[oaicite:1]{index=1}
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Pandas](https://img.shields.io/badge/Pandas-Data_Wrangling-150458?style=for-the-badge&logo=pandas)](https://pandas.pydata.org)
+[![Power BI](https://img.shields.io/badge/Power_BI-Dashboard-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)](https://powerbi.microsoft.com)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-ML_Models-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
+[![BLS Data](https://img.shields.io/badge/BLS-Consumer_Expenditure_Survey-003366?style=for-the-badge)](https://www.bls.gov/cex/)
 
 ---
 
-## 📑 Table of Contents
+_A data-driven market analysis of US digital product spending ? electronics, software, and online services ? built on Bureau of Labor Statistics Consumer Expenditure microdata. This project identifies where demand lives, how it's shifting, and where a digital products company should place its next bet._
 
-1. [🔍 Introduction](#-introduction)
-2. [⚙️ Methodology & Architecture](#️-methodology--architecture)
-3. [📊 Key Findings & Results](#-key-findings--results)
-4. [🤖 Predictive Modeling](#-predictive-modeling)
-5. [🖥️ Interactive Dashboard](#️-interactive-dashboard)
-6. [✅ Conclusion](#-conclusion)
-7. [📁 Appendix: Repo Structure](#-appendix-repo-structure)
+[Executive Summary](#-executive-summary) � [Key Findings](#-key-findings) � [Methodology](#-methodology) � [Dashboard](#-dashboard) � [ML Models](#-predictive-models--market-segmentation) � [Dataset](#-the-dataset)
+
+</div>
 
 ---
 
-## 🔍 Introduction
+## ? Executive Summary
 
-### The Problem
+The US digital products market ? spanning consumer electronics, software, and online services/subscriptions ? is a **$549.43 billion** weighted national expenditure landscape. But not all markets are created equal.
 
-Digital product businesses—electronics, software, and online services—need to understand:
+Using **262,467 household-level expenditure records** from the BLS Consumer Expenditure Interview Survey (PUMD), this project moves beyond gut instinct to answer the questions every growth team is asking: _Where should we invest next? What should we push where? And which markets are actually high-value versus just big?_
 
-- **Where demand is strongest**
-- **How it changes over time** (and under inflation pressure)
-- **Which customer segments drive growth**
-- **How to plan for future demand** :contentReference[oaicite:2]{index=2}
-
-### The Objective
-
-This project identifies **geographic hotspots**, profiles **high-value customer personas**, and measures **income-to-spend sensitivity (elasticity)** to support executive decision-making.
-
-> **Why this matters:** This work uses real-world BLS microdata and survey weights (calibration weights), proving capability in messy economic datasets and population-representative estimation.
+**The headline:** Online services dominate at **78% of total category spend**, yet the real strategic edge lies in identifying markets where per-household intensity diverges from raw volume ? and this project maps exactly that.
 
 ---
 
-## ⚙️ Methodology & Architecture
+## ? Business Problem
 
-The project follows a **Bronze → Silver → Gold** architecture to create a reliable “single source of truth” for KPIs.
+A digital products company selling across the US through e-commerce and digital delivery is allocating budget _without a clear, data-driven answer_ to:
 
-### 🧱 Data Architecture (Bronze → Silver → Gold)
+| ? Question                                        | ? Why It Matters                                     |
+| -------------------------------------------------- | ----------------------------------------------------- |
+| Where is demand strongest?                         | Focus campaigns on proven markets instead of guessing |
+| How is demand changing over time?                  | Catch momentum before competitors do                  |
+| Which categories win in which markets?             | Tailor product strategy by geography                  |
+| Which markets are "high intensity" vs. just "big"? | Avoid the population bias trap ? big ? valuable       |
+| Where should marketing dollars go to maximize ROI? | Turn insight into allocation                          |
 
-**Bronze (Raw)**
+### Stakeholders Served
 
-- Store original ZIP/CSVs under `data/raw/` unchanged
-- Keep a run log (source version, date, row counts)
-
-**Silver (Staging in SQL)**
-
-- Load selected household fields into `raw_fmli_*`
-- Load selected expenditure rows into `raw_expn_*`
-- Build `dim_ucc_digital` (UCC → digital / non-digital + service / device)
-
-**Gold (Analytics Tables)**
-
-- `fact_digital_spend`: household-period-UCC spend + labels + geography
-- `dim_household`: household attributes for segmentation
-- `kpi_market_period`: KPIs at (Region, POPSIZE, time)
-- `kpi_household_period`: KPIs at (NEWID, time) :contentReference[oaicite:5]{index=5}
+This analysis is designed to be actionable for **five distinct roles**: Growth Marketing (campaign targeting & spend allocation), Sales/Partnerships (regional prioritization), Product Management (bundle & pricing strategy by market), Finance/Strategy (revenue planning & expansion evaluation), and Ops/Customer Success (demand forecasting & service load planning).
 
 ---
 
-## 🧰 Tech Stack
+## ? Key Findings
 
-- **ETL:** Python scripts for ingestion, cleaning, and SQL loading
-- **SQL Analytics:** Materialized “Gold” tables (facts, dimensions, KPI layer)
-- **Analysis:** Python/Jupyter for EDA + statistical testing (ANOVA / T-Tests where appropriate)
-- **Visualization:** 4-page **Power BI** dashboard built for executive storytelling
+### The National Picture
 
----
+| Metric                                    | Value             |
+| ----------------------------------------- | ----------------- |
+| **Total National Expenditure** (weighted) | $549.43 Billion   |
+| **Surveyed Households**                   | 262,467           |
+| **Average National Spend per Record**     | $2.09M (weighted) |
+| **Markets Tracked**                       | 23                |
+| **Top 5 Market Concentration**            | 9% of total spend |
 
-## 📊 Key Findings & Results
+### Regional Power Rankings
 
-The analysis is structured around **three business pillars** to keep results decision-ready.
+The **West region commands 30.5%** of national digital product spend, edging out the South (29.23%), with the Northeast (22.8%) and Midwest (17.4%) trailing. But total spend tells only half the story ? spend _intensity_ per consumer unit reshuffles the rankings.
 
-| Pillar                        | Focus                                  | Key Metric                                    |
-| ----------------------------- | -------------------------------------- | --------------------------------------------- |
-| **I. Geographic Opportunity** | Market identification & prioritization | **Total Weighted Spend** by market            |
-| **II. Consumer Behavior**     | Segmentation & profiling               | **Avg Spend** by income bracket & family size |
-| **III. Predictive Insights**  | Trend + sensitivity analysis           | **Income-to-Spend Elasticity** signals        |
+**Top 5 States by Spend Share:** California ? New York ? Texas ? Illinois ? New Jersey
 
-### 🎯 Critical KPIs (Survey-Weighted)
+### Category Mix: A Services-Dominated Market
 
-- **Total Digital Spend (USD):** `SUM(spend * calibration_weight)`
-- **Digital Spend per Household:** `SUM(spend * weight) / SUM(weight)`
-- **Digital Spend Growth (Nominal + Real):** period-over-period change
-- **Real Digital Spend:** inflation-adjusted using CPI (optional enrichment)
-- **Digital Mix Share:** services share vs devices share
-- **High-Spender Share:** % households above threshold (e.g., top 20%)
-- **Market Opportunity Score:** composite (level + real growth + stability + high-spender share)
-- **Market Stability / Volatility:** e.g., coefficient of variation across periods :contentReference[oaicite:7]{index=7}
+| Category           | Share of Total Spend | Weighted Expenditure       |
+| ------------------ | -------------------- | -------------------------- |
+| ? Online Services | **77.57%**           | ~$18.73M (in survey units) |
+| ? Electronics     | **21.38%**           | ~$5.16M                    |
+| ? Software        | **1.05%**            | ~$254K                     |
 
-> 📌 **Note on geography:** Public-use microdata is confidentiality-protected. Market reporting defaults to **Region × POPSIZE × time** to avoid over-claiming city-level precision.
+**Insight:** The 78/21/1 split signals that subscription and service revenue is the dominant growth engine, but electronics still represents meaningful volume ? especially in the West, which leads all regions across every category.
 
----
+### Regional Category Breakdown
 
-## 🤖 Predictive Modeling
-
-To move from “what happened” → “what will happen,” the project includes two models.
-
-1. **Model A: Segmentation (Clustering)**
-   - Groups households (or markets) by digital spend mix + features
-   - Outputs: **segment labels, personas, distribution by market**
-   - Evaluation: silhouette score, stability across periods, interpretability via profiles
-
-2. **Model B: Forecasting (Time-Series)**
-   - Forecast **real digital spend per household** by market (Region × POPSIZE)
-   - Baselines: **ETS or ARIMA**
-   - Evaluation: rolling backtests, MAE/RMSE, prediction intervals for planning.
+| Region        | Electronics | Online Services | Software |
+| ------------- | ----------- | --------------- | -------- |
+| **West**      | 2,139,899   | 7,191,641       | 113,787  |
+| **South**     | 1,195,008   | 4,470,209       | 44,858   |
+| **Northeast** | 935,417     | 3,708,531       | 43,635   |
+| **Midwest**   | 891,423     | 3,359,854       | 52,223   |
 
 ---
 
-## 🖥️ Interactive Dashboard
+## ?? Methodology
 
-Designed for **CEO / Marketing Lead / Product Lead** with thematic storytelling (not random charts).
+### Data Source
 
-### Page 1 — Executive Market Overview (Geographic)
+**Bureau of Labor Statistics ? Consumer Expenditure Interview Survey (CE PUMD)**
 
-- KPI cards: weighted market size, spend/HH, top region
-- Map: bubble map or choropleth by spend intensity
-- Ranking: top markets
-- Split: urban vs rural share
+The CE Survey is a nationally representative survey measuring household spending. It serves as a credible demand proxy: it captures _what households actually spend_, and with calibration (survey) weights, individual records expand to population-level estimates.
 
-<img src="./executive.png" alt="Dashboard Preview" width="800">
+Two core CE files were joined and processed:
 
-### Page 2 — Consumer Profile & Demographic Deep-Dive
+- **FMLI** ? Consumer Unit (household) characteristics: demographics, income, geography, survey weights
+- **MTBI** ? Monthly expenditure details by UCC (Universal Classification Code), providing item-level spend
 
-- Spend by income bracket
-- Gender × population bucket heatmap
-- Spend by number of earners (treemap)
+### Data Pipeline
 
-<img src="./consumer.png" alt="Consumer preview" width="800">
+```
+???????????????    ????????????????    ????????????????---- ???????????????
+?  Raw CE     ?????? load raw data|?????  data cleaning to|?????  EDA & Feature     ?
+?  PUMD Files ?    ? to DB        ?    ?  & transformation ?  Engineering ?
+???????????????    ????????????????    ?????????????????    ????????????????
+                                                                   ?
+                   ????????????????    ?????????????????           ?
+                   ?  Dashboard   ??????  data          ?????????????
+                   ?  + ML Models ?    ?  visualization  ?
+                   ????????????????    ?????????????????
+```
 
-### Page 3 — Product Performance & Category Insights
+### KPI Definitions
 
-- Spend by region × product category
-- Gift vs personal consumption
-- Cost distribution (price points)
+These measures power the dashboard and analysis. Each uses BLS calibration weights to project sample data to national-level estimates:
 
-<img src="./product.png" alt="Consumer preview" width="800">
+| KPI                            | Formula                                       | Purpose                                           |
+| ------------------------------ | --------------------------------------------- | ------------------------------------------------- |
+| **Total national cost**        | `SUM(cost)`                                   | Total cost of digital products household spend    |
+| **Total National Expenditure** | `SUMX(cost � calibration_weight)`             | Population-weighted national expenditure estimate |
+| **Spend Share**                | `National Expenditure / Total National Spend` | Market's share of the national pie                |
+| **Avg. National Spend**        | `AVERAGEX(cost � calibration_weight)`         | Mean weighted spend per record                    |
+| **Total Sampled Households**   | `COUNT(newid)`                                | Number of household units interviewed             |
+| **Total Sampled Population**   | `SUM(calibration_weight)`                     | Estimated population represented                  |
 
-### Page 4 — Economic Dynamics (Advanced)
+> **Why calibration weights matter:** A single surveyed household might represent 5,000+ similar households nationally. Ignoring weights would treat Manhattan the same as rural Montana. Every national-level metric in this project is weight-adjusted.
 
-- Income vs spend scatter + trend line (elasticity signal)
-- Quarterly variance waterfall (prior vs current quarter)
-- Seasonality trends
-- Key Influencers visual (Power BI AI tool)
+---
+
+## ? Dashboard
+
+The interactive Power BI dashboard delivers two analytical views:
+
+**Tab A ? Market Sizing:** Geo-heatmap of state-level expenditure, top markets bar chart, regional spend ratio (donut), regional performance waterfall, and KPI cards for total expenditure, average spend, top-5 concentration, and market count.
+
+**Tab B ? Category Mix:** Category-level spend bars (Online Services vs. Electronics vs. Software), regional performance heatmap table, radar chart for cross-category comparison, and category share KPI cards.
+
+
+<img src="./main.png" alt="main dashboard" >
+<img src="category.png" alt="category">
+
+
 
 ---
 
-## ✅ Conclusion
+## ? Predictive Models & Market Segmentation
 
-This project converts confidentiality-protected survey microdata into a strategic asset. Through a robust ETL pipeline and KPI framework, it enables analysts and decision-makers to identify:
+### Model 1: Spend Intensity Prediction (XGBoost Regression)
 
-- **where** digital growth is happening,
-- **who** is driving it,
-- and **how** sensitive demand is to economic changes.
+**Goal:** Predict digital-product spend per Consumer Unit to identify high-value markets and score opportunities.
 
-It’s designed to demonstrate real-world analyst/data science skills: **data modeling, weighted estimation, KPI design, statistical testing, segmentation, forecasting, and executive storytelling**.
+| Component    | Detail                                                                                                                                                                        |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Target**   | `digital_spend_per_CU` (monthly/quarterly)                                                                                                                                    |
+| **Features** | Income bracket, household size, number of earners, housing tenure, region/division/PSU, time features (year, quarter), category spend ratios, lagged spend (rolling averages) |
+| **Model**    | XGBoost Regressor + SHAP explainability                                                                                                                                       |
+| **Output**   | Predicted spend per CU per market/period + feature importance rankings                                                                                                        |
 
 ---
+
+## ?? The Dataset
+
+**Source:** BLS Consumer Expenditure Interview Survey ? Public Use Microdata (PUMD)
+
+| Property    | Detail                                                             |
+| ----------- | ------------------------------------------------------------------ |
+| **Records** | 262,467                                                            |
+| **Columns** | 21                                                                 |
+| **Memory**  | ~42.1 MB                                                           |
+| **Grain**   | One row = one expenditure record for a consumer unit � UCC � month |
+
+### Schema
+
+| Column                                   | Type           | Description                                              |
+| ---------------------------------------- | -------------- | -------------------------------------------------------- |
+| `newid`                                  | int64          | Consumer unit (household) identifier                     |
+| `reference_month` / `reference_year`     | object / int64 | When the expenditure occurred                            |
+| `ucc`                                    | int64          | Universal Classification Code ? BLS product/service code |
+| `cost`                                   | float64        | Dollar amount spent                                      |
+| `calibration_weight`                     | float64        | Survey weight to project to national population          |
+| `fam_size`                               | int64          | Number of people in the consumer unit                    |
+| `family_income_before_tax_last_12_month` | int64          | Pre-tax household income                                 |
+| `number_of_earners`                      | int64          | Working members in household                             |
+| `region`                                 | object         | Census region (West, South, Northeast, Midwest)          |
+| `state`                                  | object         | US state                                                 |
+| `division`                               | object         | Census division                                          |
+| `psu`                                    | object         | Primary Sampling Unit (metro area proxy)                 |
+| `sex_ref`                                | object         | Sex of reference person                                  |
+| `product_description`                    | object         | Human-readable product/service name                      |
+| `product_category`                       | object         | Grouped category (Electronics, Software, Online Service) |
+| `population_size`                        | object         | Population estimate for geography                        |
+| `interview_month` / `interview_year`     | object / int64 | Survey interview timing                                  |
+| `total_salary_income_before_deduction`   | int64          | Gross salary income                                      |
+
+---
+
+## ? Business Questions Addressed
+
+This project is structured around **six analytical pillars**, each answering specific strategic questions:
+
+**A. Market Sizing & Rankings** ? Which regions and metros lead by total spend and spend per household? How concentrated is the market across the top 5/10/25 geographies?
+
+**B. Intensity vs. Scale** ? Which markets rank high in volume but low in per-CU spend (big but diluted)? Which are small but high-value per household? This distinction is critical to avoid the "population bias" trap.
+
+**C. Category Mix & Portfolio Strategy** ? Where does electronics dominate versus services/subscriptions? Which markets are over-indexed on a specific category ? and can we exploit that?
+
+**D. Trends, Seasonality & Momentum** ? How is spend shifting over time? Which markets are accelerating? Is there a Q4 spike, and does it vary by category or region?
+
+**E. Household Drivers** ? What consumer unit characteristics (income, household size, earners, tenure) best explain high digital spend? This fuels targeting and persona development.
+
+**F. Opportunity Scoring** ? A composite score combining spend level, intensity, growth, and category fit to produce a prioritized "invest here" list.
+
+---
+
+## ?? Tech Stack
+
+| Layer                | Tools                                     |
+| -------------------- | ----------------------------------------- |
+| **Data Processing**  | Python, Pandas, NumPy                     |
+| **Visualization**    | Power BI, Matplotlib, Seaborn             |
+| **Machine Learning** | Scikit-Learn, XGBoost, SHAP               |
+| **Database/Query**   | SQL                                       |
+| **Data Source**      | BLS Consumer Expenditure Survey (CE PUMD) |
+| **Version Control**  | Git, GitHub                               |
+
+---
+
+---
+
+## ? How to Reproduce
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/digital-product-insights.git
+cd digital-product-insights
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the analysis notebooks in order
+jupyter notebook notebooks/
+```
+
+---
+
+## ? Connect
+
+If this analysis resonates ? or if you're building something where market intelligence and data storytelling matter ? I'd love to connect.
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](www.linkedin.com/in/alainrw
+)
+[![Portfolio](https://img.shields.io/badge/Portfolio-View_More-000?style=for-the-badge&logo=github)](https://github.com/Alain-16)
+
+---
+
+<div align="center">
+
+_Built with curiosity, BLS microdata, and too much coffee._ ?
+
+</div>
+
+
+
